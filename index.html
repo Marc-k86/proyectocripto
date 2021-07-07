@@ -58,8 +58,8 @@
 
 	<table cellpadding="0" cellspacing="0" border="0" class="row-border" id="table">
 		<thead>
-			<th class="#">#</th>
-			<th class="moneda">Moneda</th>
+		<th class="#">#</th>
+		<th class="moneda">Moneda</th>
 	        <th class="precio">Precio</th>
 	        <th class="hora">1 h</th>
 	        <th class="hr24">24 h</th>
@@ -77,16 +77,16 @@
        
 			var table = $('#table').DataTable( {
 			    		"columns": [
-							    		{ "className":'# col-md-2', "data": "#" },
-							            { "className":'moneda col-md-2', "data": "moneda" },
-							            { "className":'precio col-md-2', "data": "precio" },
-							            { "className":'hora col-md-2', "data": "hora" },
-							            { "className":'hr24 col-md-2', "data": "hr24" },
-							            { "className":'dia7 col-md-2', "data": "dia7" },
-							            { "className":'volumen col-md-2', "data": "volumen" },
-							            { "className":'cap col-md-2', "data": "cap" },
-							            { "className":'max col-md-2', "data": "max" },
-					        		],
+						    { "className":'# col-md-2', "data": "#" },
+						    { "className":'moneda col-md-2', "data": "moneda" },
+						    { "className":'precio col-md-2', "data": "precio" },
+						    { "className":'hora col-md-2', "data": "hora" },
+						    { "className":'hr24 col-md-2', "data": "hr24" },
+						    { "className":'dia7 col-md-2', "data": "dia7" },
+						    { "className":'volumen col-md-2', "data": "volumen" },
+						    { "className":'cap col-md-2', "data": "cap" },
+						    { "className":'max col-md-2', "data": "max" },
+						   ],
 			        	"order": [[ 3, "desc" ], [ 4, "desc" ], [ 5, "desc" ]]
 		    });
 	    
@@ -106,7 +106,7 @@
 			function mostrarNombre(n){
 				for (var i = 0; i < n.length; i++) {
 			   		table.row.add( {
-		   				"#":       i+1,
+			            "#":       n[i].market_cap_rank,
 			            "moneda":  "<div><img src='"+n[i].image+"' style='height:18px; width:18px'></div><div class='name'>"+n[i].name+ " </div> <div class='symbol'>" + (n[i].symbol).toUpperCase()+"</div>",
 			            "precio":  formatNumber(parseFloat(n[i].current_price),12),
 			            "hora":    Number(n[i].price_change_percentage_1h_in_currency).toFixed(0),
