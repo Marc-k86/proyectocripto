@@ -126,7 +126,7 @@
 			for (var i = 0; i < urlArray.length; i++) {
 				traerDato(urlArray[i]).then(mostrarNombre);
 			}
-			table.order([[ 8, "asc" ], [ 7, "asc" ]]).draw(true);
+			table.order([[ 8, "asc" ], [ 7, "desc" ]]).draw(true);
 		}); 
 
 		function infinito(number){
