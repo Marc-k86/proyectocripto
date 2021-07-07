@@ -1,1 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Proyecto</title>
 
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+	
+	<style>
+		table {
+
+		  white-space: nowrap;
+		}
+
+		
+		.precio,
+		.hora,
+		.hr24,
+		.dia7,
+		.volumen,
+		.cap,
+		.max{
+			text-align: right;
+		}
+
+		.name{
+			/*display:flex; flex-wrap: nowrap; align-items: center;*/
+			float: left;
+			width: 125px;
+			text-align: left;
+			margin: 2px 10px;
+			display: inline
+		}
+
+		.moneda{
+			display:flex; flex-wrap: nowrap; align-items: center;/*
+			float: left;
+			width: 125px;
+			text-align: left;
+			margin: 2px 10px;
+			display: inline*/
+		}
+
+		.symbol{
+			/*display:inline; flex-wrap: nowrap; align-items: right;*/
+			  float: right;
+			  text-align: right;
+			  margin: 2px 10px;
+			  display: inline
+		}
+	</style>
+</head>
+<body>
+
+	<table cellpadding="0" cellspacing="0" border="0" class="row-border" id="table">
+		<thead>
+			<th class="#">#</th>
+			<th class="moneda">Moneda</th>
+	        <th class="precio">Precio</th>
+	        <th class="hora">1 h</th>
+	        <th class="hr24">24 h</th>
+	        <th class="dia7">7 d</th>
+	        <th class="volumen">Volumen en 24 h</th>
+	        <th class="cap">Cap. de Mercado</th>
+	        <th class="max">Max. circ.</th>
+		</thead>
+		<tbody>	    
+		</tbody>
+
+	</table>
+<script type="text/javascript">
+		$(document).ready(function() {
+       
+			var table = $('#table').DataTable( {
+			    		"columns": [
+							    		{ "className":'# col-md-2', "data": "#" },
+							            { "className":'moneda col-md-2', "data": "moneda" },
+							            { "className":'precio col-md-2', "data": "precio" },
+							            { "className":'hora col-md-2', "data": "hora" },
+							            { "className":'hr24 col-md-2', "data": "hr24" },
+							            { "className":'dia7 col-md-2', "data": "dia7" },
+							            { "className":'volumen col-md-2', "data": "volumen" },
+							            { "className":'cap col-md-2', "data": "cap" },
+							            { "className":'max col-md-2', "data": "max" },
+					        		],
+			        	"order": [[ 3, "desc" ], [ 4, "desc" ], [ 5, "desc" ]]
+		    });
+	    
+	       	
+			async function traerDato(url){
+				/*const respuesta = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=1200&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d");*/
+				const respuesta = await fetch(url);
+		  		if(!respuesta.ok){
+			  		let oops=("404 no encontro nada");
+			    	alert(oops);
+			    	throw new Error(oops);
+			  	}
+			  	const nombre = respuesta.json();
+			  	return nombre;
+			}
+
+			function mostrarNombre(n){
+				for (var i = 0; i < n.length; i++) {
+			   		table.row.add( {
+		   				"#":       i+1,
+			            "moneda":  "<div><img src='"+n[i].image+"' style='height:18px; width:18px'></div><div class='name'>"+n[i].name+ " </div> <div class='symbol'>" + (n[i].symbol).toUpperCase()+"</div>",
+			            "precio":  formatNumber(parseFloat(n[i].current_price),12),
+			            "hora":    Number(n[i].price_change_percentage_1h_in_currency).toFixed(0),
+			            "hr24":    Number(n[i].price_change_percentage_24h_in_currency).toFixed(0),
+			            "dia7":    Number(n[i].price_change_percentage_7d_in_currency).toFixed(0),
+			            "volumen": formatNumber(Number(n[i].total_volume),0),
+			            "cap":     formatNumber(Number(n[i].market_cap),0),
+			            "max": 	   formatNumber(infinito(Number(n[i].total_supply).toFixed(0)),0),
+			        } ).draw();
+		        }
+			}
+			var url1 = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d";
+			var url2 = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=2&sparkline=false&price_change_percentage=1h%2C24h%2C7d";
+			var urlArray = new Array(url1, url2);
+			for (var i = 0; i < urlArray.length; i++) {
+				traerDato(urlArray[i]).then(mostrarNombre);
+			}
+
+		}); 
+
+		function infinito(number){
+			if(number==0){
+				number = 100000000000000000000;
+			}
+			return number;
+		}
+
+		function formatNumber(floatValue = 0, decimals = 0, multiplier = 1) {
+		    let floatMultiplied = floatValue * multiplier;
+		    let stringFloat = floatMultiplied + "";
+		    let arraySplitFloat = stringFloat.split(".");
+		    let decimalsValue = "0";
+		    if (arraySplitFloat.length > 1) {
+		        decimalsValue = arraySplitFloat[1].slice(0, decimals);
+		    }
+		    let integerValue = arraySplitFloat[0];
+		    let arrayFullStringValue = [integerValue, decimalsValue];
+		    let FullStringValue = arrayFullStringValue.join(".")
+		    let floatFullValue = parseFloat(FullStringValue) + "";
+		    let formatFloatFullValue = new Intl.NumberFormat('es-MX', { minimumFractionDigits: decimals }).format(floatFullValue);
+		    return formatFloatFullValue;
+		}
+
+	</script>
+	
+</body>
+</html>
