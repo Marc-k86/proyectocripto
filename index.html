@@ -86,8 +86,8 @@
 						    { "className":'volumen col-md-2', "data": "volumen" },
 						    { "className":'cap col-md-2', "data": "cap" },
 						    { "className":'max col-md-2', "data": "max" },
-						   ],
-			        	"order": [[ 3, "desc" ], [ 4, "desc" ], [ 5, "desc" ]]
+						   ]/*,
+			        	"order": [[ 3, "desc" ], [ 4, "desc" ], [ 5, "desc" ]]*/
 		    });
 	    
 	       	
@@ -105,18 +105,20 @@
 
 			function mostrarNombre(n){
 				for (var i = 0; i < n.length; i++) {
-			   		table.row.add( {
-			            "#":       n[i].market_cap_rank,
-			            "moneda":  "<div><img src='"+n[i].image+"' style='height:18px; width:18px'></div><div class='name'>"+n[i].name+ " </div> <div class='symbol'>" + (n[i].symbol).toUpperCase()+"</div>",
-			            "precio":  formatNumber(parseFloat(n[i].current_price),12),
-			            "hora":    Number(n[i].price_change_percentage_1h_in_currency).toFixed(0),
-			            "hr24":    Number(n[i].price_change_percentage_24h_in_currency).toFixed(0),
-			            "dia7":    Number(n[i].price_change_percentage_7d_in_currency).toFixed(0),
-			            "volumen": formatNumber(Number(n[i].total_volume),0),
-			            "cap":     formatNumber(Number(n[i].market_cap),0),
-			            "max": 	   formatNumber(infinito(Number(n[i].total_supply).toFixed(0)),0),
-			        } ).draw();
-		        }
+					table.row.add( {
+					    "#":       n[i].market_cap_rank,
+					    "moneda":  "<div><img src='"+n[i].image+"' style='height:18px; width:18px'></div><div class='name'>"+n[i].name+ " </div> <div class='symbol'>" + (n[i].symbol).toUpperCase()+"</div>",
+					    "precio":  formatNumber(parseFloat(n[i].current_price),12),
+					    "hora":    Number(n[i].price_change_percentage_1h_in_currency).toFixed(0),
+					    "hr24":    Number(n[i].price_change_percentage_24h_in_currency).toFixed(0),
+					    "dia7":    Number(n[i].price_change_percentage_7d_in_currency).toFixed(0),
+					    "volumen": formatNumber(Number(n[i].total_volume),0),
+					    "cap":     formatNumber(Number(n[i].market_cap),0),
+					    "max": 	   formatNumber(infinito(Number(n[i].total_supply).toFixed(0)),0),
+						//} ).draw();
+				    	});
+		        	}
+				table.draw();
 			}
 			var url1 = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d";
 			var url2 = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=2&sparkline=false&price_change_percentage=1h%2C24h%2C7d";
@@ -124,7 +126,7 @@
 			for (var i = 0; i < urlArray.length; i++) {
 				traerDato(urlArray[i]).then(mostrarNombre);
 			}
-
+			table.order([[ 8, "asc" ], [ 7, "asc" ]]).draw(true);
 		}); 
 
 		function infinito(number){
