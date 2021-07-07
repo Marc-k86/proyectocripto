@@ -78,14 +78,14 @@
 			var table = $('#table').DataTable( {
 			    		"columns": [
 						    { "className":'# col-md-2', "data": "#" },
-						    { "className":'moneda col-md-2', "data": "moneda" },
+						    { "className":'moneda col-md-2', "data": "moneda"},
 						    { "className":'precio col-md-2', "data": "precio" },
 						    { "className":'hora col-md-2', "data": "hora" },
 						    { "className":'hr24 col-md-2', "data": "hr24" },
 						    { "className":'dia7 col-md-2', "data": "dia7" },
 						    { "className":'volumen col-md-2', "data": "volumen" },
-						    { "className":'cap col-md-2', "data": "cap" },
-						    { "className":'max col-md-2', "data": "max" },
+						    { "className":'cap col-md-2', "data": "cap", "type": "numeric-comma"  },
+						    { "className":'max col-md-2', "data": "max", "type": "numeric-comma"  },
 						   ]/*,
 			        	"order": [[ 3, "desc" ], [ 4, "desc" ], [ 5, "desc" ]]*/
 		    });
