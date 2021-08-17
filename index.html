@@ -122,7 +122,8 @@
 					table.row.add( {
 					    "id":       n[i].id,
 					    "#":       n[i].market_cap_rank,
-					    "moneda":  "<div><img src='"+n[i].image+"' style='height:18px; width:18px'></div><div class='name'>"+n[i].name+ " </div> <div class='symbol'>" + (n[i].symbol).toUpperCase()+"</div>",
+					    //"moneda":  "<div><img src='"+n[i].image+"' style='height:18px; width:18px'></div><div class='name'>"+n[i].name+ " </div> <div class='symbol'>" + (n[i].symbol).toUpperCase()+"</div>",
+					    "moneda":  "<div><img src='"+n[i].image+"' style='height:18px; width:18px'></div><div class='name'>"+n[i].name+ "  " + (n[i].symbol).toUpperCase()+"</div>",
 					    "precio":  formatNumber(parseFloat(n[i].current_price),12),
 					    "hora":    Number(n[i].price_change_percentage_1h_in_currency).toFixed(1)+"%",
 					    "hr24":    Number(n[i].price_change_percentage_24h_in_currency).toFixed(1)+"%",
