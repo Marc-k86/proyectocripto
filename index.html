@@ -58,8 +58,9 @@
 </head>
 <body>
 
-	<table cellpadding="0" cellspacing="0" border="0" class="table table-dark" id="table">
-		<thead>
+	<table cellpadding="0" cellspacing="0" border="0" class="table" id="table">
+		<thead class="thead-dark">
+		<th class="id">Id</th>
 		<th class="#">#</th>
 		<th class="moneda">Moneda</th>
 	        <th class="precio">Precio</th>
@@ -79,6 +80,7 @@
        
 			var table = $('#table').DataTable( {
 			    		"columns": [
+						    { "className":'# col-md-2', "data": "id" },
 						    { "className":'# col-md-2', "data": "#" },
 						    { "className":'moneda col-md-2', "data": "moneda"},
 						    { "className":'precio col-md-2', "data": "precio" },
@@ -118,6 +120,7 @@
 			function mostrarNombre(n){
 				for (var i = 0; i < n.length; i++) {
 					table.row.add( {
+					    "id":       n[i].id,
 					    "#":       n[i].market_cap_rank,
 					    "moneda":  "<div><img src='"+n[i].image+"' style='height:18px; width:18px'></div><div class='name'>"+n[i].name+ " </div> <div class='symbol'>" + (n[i].symbol).toUpperCase()+"</div>",
 					    "precio":  formatNumber(parseFloat(n[i].current_price),12),
@@ -139,6 +142,15 @@
 				traerDato(urlArray[i]).then(mostrarNombre);
 			}
 			table.order([[ 8, "asc" ], [ 7, "desc" ]]).draw(true);
+			
+			var column = table.column( 0 );
+			// Toggle the visibility
+			column.visible( ! column.visible() );
+			$('#table tbody').on('click', 'tr', function () {
+				var data = table.row( this ).data();
+				alert( 'You clicked on '+data[0]+'\'s row' );
+			} );
+			
 		}); 
 
 		function infinito(number){
